@@ -1,0 +1,37 @@
+#!/bin/bash
+
+
+get_file_count() {
+    echo $(ls -l | grep -v ^d | wc -l)
+}
+
+
+generate_readme() {
+    echo "Titre du projet: Deviner le nombre de fichiers" > README.md
+    echo "Date et heure de la génération: $(date)" >> README.md
+    echo "Nombre de lignes de code dans guessinggame.sh: $(wc -l < $0)" >> README.md
+    echo "Le fichier README.md a été généré avec succès!" 
+}
+
+
+if [[ "$1" == "make" ]]; then
+    generate_readme
+    exit 0
+fi
+
+
+file_count=$(get_file_count)
+
+
+echo "Devinez combien de fichiers se trouvent dans le répertoire actuel :"
+while true; do
+    read guess
+    if [[ "$guess" -lt "$file_count" ]]; then
+        echo "Trop bas! Essayez encore."
+    elif [[ "$guess" -gt "$file_count" ]]; then
+        echo "Trop haut! Essayez encore."
+    else
+        echo "Félicitations! Vous avez deviné correctement."
+        break
+    fi
+done
